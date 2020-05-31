@@ -8,13 +8,7 @@ const db = admin.firestore();
 const defaultImg =
   "https://lh3.googleusercontent.com/a-/AOh14Gg_y1WjT42C9jvK6TcRXBemMGJS7qhIrXHnvPnyvQ";
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
+//Function to delete all of users todos
 const deleteTodos = (uid) => {
   db.collection("todos")
     .where("uid", "==", uid)
@@ -31,6 +25,7 @@ const deleteTodos = (uid) => {
     .catch((err) => console.log(err));
 };
 
+//Function to delete user Data in the users collection
 const deleteUserData = (uid) => {
   db.collection("users")
     .doc(uid)
@@ -39,6 +34,7 @@ const deleteUserData = (uid) => {
     .catch((err) => console.log(err));
 };
 
+//Run a cloud function once a user is created -- Add user Data in the users collection
 exports.createUser = functions
   .region("asia-east2")
   .auth.user()
@@ -56,6 +52,7 @@ exports.createUser = functions
       .catch((err) => console.log(err));
   });
 
+//Deletes users todos
 exports.deleteUser = functions
   .region("asia-east2")
   .auth.user()
@@ -63,6 +60,7 @@ exports.deleteUser = functions
     deleteTodos(user.uid);
   });
 
+//Delete User from users collection
 exports.deleteUserFirestore = functions
   .region("asia-east2")
   .auth.user()
